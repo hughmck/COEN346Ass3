@@ -1,4 +1,5 @@
 import java.security.Timestamp;
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class APICalls {
@@ -10,6 +11,15 @@ public class APICalls {
     int value;
     int variableID;
     String command;
+
+    private Array mainMemory[];
+
+
+    public void VMM(int size)
+    {
+        this.size = size; //need to add the memconfig reader file, but the size of the memory will be this
+        mainMemory = new Variable[size]; //adding the size of the memory
+    }
 
     APICalls(String command, int variableID, int value){
         this.command  = command;
@@ -24,15 +34,14 @@ public class APICalls {
         {
             if (mainMemory[i] == null)
             {
-                Variable variable = new Variable();
-                variable.setId(variableId);
+                variable.setId(variableID);
                 variable.setValue(value);
 
                 //Update timestamp
                 variable.setLastAccessTime(new Timestamp(System.currentTimeMillis()));
 
                 mainMemory[i] = variable;
-                System.out.println("STORE (Found a Spot in Main Memory):" + " Variable: " + variableId + ", Value: " + value);
+                System.out.println("STORE (Found a Spot in Main Memory):" + " Variable: " + variableID + ", Value: " + value);
                 return;
             }
         }
@@ -40,19 +49,17 @@ public class APICalls {
 
     }
 
-    public void LookUp(int variableID){
+    public int LookUp(int variableID){
         for (int i = 0; i<size; i++)
         {
-            if (mainMemory[i].getId() == variableId)
+            if (mainMemory[i].getId() == variableID)
             {
-                System.out.println("LOOKUP (Found Variable in Main Memory): Variable " + variableId + ", Value: " + mainMemory[i].getValue());
+                System.out.println("LOOKUP (Found Variable in Main Memory): Variable " + variableID + ", Value: " + mainMemory[i].getValue());
                 mainMemory[i].setLastAccessTime(new Timestamp(System.currentTimeMillis()));
                 return mainMemory[i].getValue();
             }
         }
         return -1;
-
-
     }
 
     public void Release(int variableID){
@@ -65,49 +72,18 @@ public class APICalls {
                 return;
             }
         }
-
-
     }
     public void run(ArrayList<APICalls> commandList) { //trying to run through the list of commands received from driver file
         for (int i = 0; i < commandList.size(); i++) {
             if (commandList.get(i).equals("Store")) {
-                Store(); //trying to check the string value
+                Store(variableID, value); //trying to check the string value
             } else if (commandList.get(i).equals("Lookup")) {
-                LookUp();
+                LookUp(variableID);
             } else {
-                Release();
+                Release(variableID);
             }
         }
     }
 }
 
-
-
-//
-
-//
-//
-//    //check next command to run
-//    public synchronized Commander nextCommand(){
-//        Commander temp = new Commander(commandList.get(0).command, commandList.get(0).var, commandList.get(0).value);
-//        commandList.remove(0);
-//        commandCount--;
-//        return temp;
-//
-//    }
-//
-//
-//    public String getCommand() {
-//        return command;
-//    }
-//
-//    public Integer getVariableID() {
-//        return variableID;
-//    }
-//
-//    public Integer getValue() {
-//        return value;
-//    }
-//
-//
 
