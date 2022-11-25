@@ -1,3 +1,4 @@
+import java.security.Timestamp;
 import java.util.ArrayList;
 
 public class APICalls {
@@ -16,17 +17,54 @@ public class APICalls {
         this.value = value;
     }
 
-    public void Store(){
+    public void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
+        this.variableID = variableID;
+        this.value = value;
+        for (int i = 0; i<size; i++)
+        {
+            if (mainMemory[i] == null)
+            {
+                Variable variable = new Variable();
+                variable.setId(variableId);
+                variable.setValue(value);
+
+                //Update timestamp
+                variable.setLastAccessTime(new Timestamp(System.currentTimeMillis()));
+
+                mainMemory[i] = variable;
+                System.out.println("STORE (Found a Spot in Main Memory):" + " Variable: " + variableId + ", Value: " + value);
+                return;
+            }
+        }
 
 
     }
 
-    public void LookUp(){
+    public void LookUp(int variableID){
+        for (int i = 0; i<size; i++)
+        {
+            if (mainMemory[i].getId() == variableId)
+            {
+                System.out.println("LOOKUP (Found Variable in Main Memory): Variable " + variableId + ", Value: " + mainMemory[i].getValue());
+                mainMemory[i].setLastAccessTime(new Timestamp(System.currentTimeMillis()));
+                return mainMemory[i].getValue();
+            }
+        }
+        return -1;
 
 
     }
 
-    public void Release(){
+    public void Release(int variableID){
+        for (int i = 0; i<size; i++)
+        {
+            if (mainMemory[i].getId() == variableId)
+            {
+                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableId + ", Value: " + String.valueOf(mainMemory[i].getValue()));
+                mainMemory[i] = null; //RELEASE
+                return;
+            }
+        }
 
 
     }
