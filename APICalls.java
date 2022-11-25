@@ -3,34 +3,18 @@ import java.util.ArrayList;
 public class APICalls {
 
 
-    private ArrayList<Commands> commandCount = new ArrayList<Commands>();
-    private String command;
-    private Integer variableID;
-    private Integer value;
-    private int commandCount;
 
-
-    public Commands(Character command, Integer variableID, Integer value){
-        this.command = command;
+    APICalls(String command, int variableID, int value){
+        this.command  = command;
         this.variableID = variableID;
         this.value = value;
     }
-
-    public Commander(char command, int var) {
-        this.command = command;
-        this.variableID = var;
-    }
-
 
     //number of commands
     public int seeCommandCount(){
         return commandCount;
     }
-
-    public Commander(ArrayList<Character> orders, ArrayList<Integer> vars, ArrayList<Integer> vals){
-        int valcount =0;
-
-
+    
         for(int i=0; i< orders.size(); i++){
             if(orders.get(i).equals('s')){
                 commandList.add(new Commander('s', vars.get(i), vals.get(valcount++)));
@@ -54,11 +38,11 @@ public class APICalls {
     }
 
 
-    public Character getCommand() {
+    public String getCommand() {
         return command;
     }
 
-    public Integer getVar() {
+    public Integer getVariableID() {
         return variableID;
     }
 
