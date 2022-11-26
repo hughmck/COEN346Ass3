@@ -13,13 +13,6 @@ public class APICalls {
     APICalls virtualMemoryManager[] = new APICalls[Driver.memorySize];
     APICalls diskDrive[] = new APICalls[1000];
 
-
-    public void virtualMemoryManager(int memorySize)
-    {
-        this.memorySize = memorySize;
-        mainMemory =  mainMemory[memorySize]; //adding the size of the memory
-    }
-
     APICalls(String command, int variableID, int value){
         this.command  = command;
         this.variableID = variableID;
@@ -77,6 +70,22 @@ public class APICalls {
             }
         }
     }
+
+    public int getID(){
+        return variableID;
+    }
+
+    public int getValue(){
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+    public void setVariableID(int variableID) {
+        this.variableID = variableID;
+    }
+
 }
 
 
