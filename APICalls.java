@@ -1,5 +1,3 @@
-import java.security.Timestamp;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class APICalls {
@@ -12,8 +10,8 @@ public class APICalls {
     int variableID;
     String command;
 
-    public int memorySize = Driver.memorySize;
-    public Array mainMemory[];
+    APICalls virtualMemoryManager[] = new APICalls[Driver.memorySize];
+    APICalls diskDrive[] = new APICalls[1000];
 
 
     public void virtualMemoryManager(int memorySize)
@@ -31,45 +29,39 @@ public class APICalls {
     public void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
         this.variableID = variableID;
         this.value = value;
-        for (int i = 0; i<memorySize; i++)
+        for (int i = 0; i<Driver.memorySize; i++) //going through the length of the driver memorysize (virtual memory maneger size)
         {
-            if (i != mainMemory.length - 1) //checking to see if its at the last index in the loop
+            if (i != virtualMemoryManager.length - 1) //checking to see if its at the last index in the loop, as long as its not, add the values
             {
-                APICalls.setId(variableID); //adding the ID and value into main memory if a spot is found
-                APICalls.setValue(value);
-
-                mainMemory[i] = variable;
+                virtualMemoryManager[i] = new APICalls(); //trying to add the value of store
                 System.out.println("STORE (Found a Spot in Main Memory):" + " Variable: " + variableID + ", Value: " + value);
                 return;
             }
             else{
-                //add to disk drive (create a function)
-            }
+                virtualMemoryManager[i] = new APICalls(); //trying to add the value of store into the disk drive if the virtual memory manager is full
+                System.out.println("STORE (Virtual Memory was full, adding to disk drive):" + " Variable: " + variableID + ", Value: " + value);            }
         }
-
-
     }
 
     public int LookUp(int variableID){
-        for (int i = 0; i<size; i++)
+        for (int i = 0; i<Driver.memorySize; i++)
         {
-            if (mainMemory[i].getId() == variableID)
+            if (virtualMemoryManager[i].getId() == variableID)
             {
-                System.out.println("LOOKUP (Found Variable in Main Memory): Variable " + variableID + ", Value: " + mainMemory[i].getValue());
-                mainMemory[i].setLastAccessTime(new Timestamp(System.currentTimeMillis()));
-                return mainMemory[i].getValue();
+                System.out.println("LOOKUP (Found Variable in Main Memory): Variable " + variableID + ", Value: " + virtualMemoryManager[i].getValue());
+                return virtualMemoryManager[i].getValue();
             }
         }
         return -1;
     }
 
     public void Release(int variableID){
-        for (int i = 0; i<size; i++)
+        for (int i = 0; i<Driver.memorySize; i++)
         {
-            if (mainMemory[i].getId() == variableId)
+            if (virtualMemoryManager[i].getId() == variableId)
             {
-                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableId + ", Value: " + String.valueOf(mainMemory[i].getValue()));
-                mainMemory[i] = null; //RELEASE
+                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableId + ", Value: " + String.valueOf(virtualMemoryManager[i].getValue()));
+                virtualMemoryManager[i] = null; //release the object
                 return;
             }
         }
