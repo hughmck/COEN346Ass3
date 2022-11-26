@@ -6,9 +6,7 @@ import java.io.IOException;
 public class Driver {
     public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
     public static int numberOfCommands;
-
     public static int memorySize;
-
 
     public ArrayList<APICalls> getListOfCommands() {
         return commands;
@@ -42,7 +40,24 @@ public class Driver {
             memorySize= reader.nextInt();
             System.out.println(memorySize);
         }
+        try {
+            reader = new Scanner(new File(
+                    "processes.txt"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        while(reader.hasNext()){
+            int numberOfCores = reader.nextInt();
+            int numberOfProcesses = reader.nextInt();
+            for(int i=0;i<numberOfProcesses;i++){
+                int readyTime= reader.nextInt();
+                int processingTime = reader.nextInt();
+            }
+        }
     }
 }
+
 
 
