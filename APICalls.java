@@ -12,13 +12,14 @@ public class APICalls {
     int variableID;
     String command;
 
-    private Array mainMemory[];
+    public int memorySize = Driver.memorySize;
+    public Array mainMemory[];
 
 
-    public void VMM(int size)
+    public void virtualMemoryManager(int memorySize)
     {
-        this.size = size; //need to add the memconfig reader file, but the size of the memory will be this
-        mainMemory = new Variable[size]; //adding the size of the memory
+        this.memorySize = memorySize;
+        mainMemory =  mainMemory[memorySize]; //adding the size of the memory
     }
 
     APICalls(String command, int variableID, int value){
@@ -30,19 +31,19 @@ public class APICalls {
     public void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
         this.variableID = variableID;
         this.value = value;
-        for (int i = 0; i<size; i++)
+        for (int i = 0; i<memorySize; i++)
         {
-            if (mainMemory[i] == null)
+            if (i != mainMemory.length - 1) //checking to see if its at the last index in the loop
             {
-                variable.setId(variableID);
-                variable.setValue(value);
-
-                //Update timestamp
-                variable.setLastAccessTime(new Timestamp(System.currentTimeMillis()));
+                APICalls.setId(variableID); //adding the ID and value into main memory if a spot is found
+                APICalls.setValue(value);
 
                 mainMemory[i] = variable;
                 System.out.println("STORE (Found a Spot in Main Memory):" + " Variable: " + variableID + ", Value: " + value);
                 return;
+            }
+            else{
+                //add to disk drive (create a function)
             }
         }
 

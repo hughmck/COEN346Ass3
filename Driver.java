@@ -7,6 +7,9 @@ public class Driver {
     public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
     public static int numberOfCommands;
 
+    public static int memorySize;
+
+
     public ArrayList<APICalls> getListOfCommands() {
         return commands;
     }
@@ -26,6 +29,18 @@ public class Driver {
                 int value = reader.nextInt();
                 commands.add(new APICalls(command, variableID, value)); //need a command which can take release 1 (doesnt have 3 attributes)
                 numberOfCommands++;
+        }
+        try {
+            reader = new Scanner(new File(
+                    "memeconfig.txt"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        while(reader.hasNext()){
+            memorySize= reader.nextInt();
+            System.out.println(memorySize);
         }
     }
 }
