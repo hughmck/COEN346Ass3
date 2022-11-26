@@ -26,12 +26,12 @@ public class APICalls {
         {
             if (i != virtualMemoryManager.length - 1) //checking to see if its at the last index in the loop, as long as its not, add the values
             {
-                virtualMemoryManager[i] = new APICalls(); //trying to add the value of store
+                //virtualMemoryManager[i] = new APICalls(); //trying to add the value of store
                 System.out.println("STORE (Found a Spot in Main Memory):" + " Variable: " + variableID + ", Value: " + value);
                 return;
             }
             else{
-                virtualMemoryManager[i] = new APICalls(); //trying to add the value of store into the disk drive if the virtual memory manager is full
+                //virtualMemoryManager[i] = new APICalls(); //trying to add the value of store into the disk drive if the virtual memory manager is full
                 System.out.println("STORE (Virtual Memory was full, adding to disk drive):" + " Variable: " + variableID + ", Value: " + value);            }
         }
     }
@@ -39,7 +39,7 @@ public class APICalls {
     public int LookUp(int variableID){
         for (int i = 0; i<Driver.memorySize; i++)
         {
-            if (virtualMemoryManager[i].getId() == variableID)
+            if (virtualMemoryManager[i].getID() == variableID)
             {
                 System.out.println("LOOKUP (Found Variable in Main Memory): Variable " + variableID + ", Value: " + virtualMemoryManager[i].getValue());
                 return virtualMemoryManager[i].getValue();
@@ -51,9 +51,9 @@ public class APICalls {
     public void Release(int variableID){
         for (int i = 0; i<Driver.memorySize; i++)
         {
-            if (virtualMemoryManager[i].getId() == variableId)
+            if (virtualMemoryManager[i].getID() == variableID)
             {
-                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableId + ", Value: " + String.valueOf(virtualMemoryManager[i].getValue()));
+                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + String.valueOf(virtualMemoryManager[i].getValue()));
                 virtualMemoryManager[i] = null; //release the object
                 return;
             }
