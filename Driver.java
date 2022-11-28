@@ -5,15 +5,15 @@ import java.io.File;
 import java.io.IOException;
 
 public class Driver {
-    public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
+    //public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
     public static int numberOfCommands;
     public static int memorySize;
 
-    public ArrayList<APICalls> getListOfCommands() {
-        return commands;
-    }
+    //public ArrayList<APICalls> getListOfCommands() {
+     //   return commands;
+    //}
 
-    public ArrayList<APICalls> commandList = Driver.commands;
+    //public ArrayList<APICalls> commandList = Driver.commands;
 
     int value;
     int variableID;
@@ -35,18 +35,21 @@ public class Driver {
 
         while(reader.hasNext()){
                 String command = reader.next();
-                if(command == "STORE"){
+                if(command == "Store"){
                     int variableID= reader.nextInt();
                     int value = reader.nextInt();
-
                     Store(variableID, value);
-
-
-
                 }
-                int variableID= reader.nextInt();
-                int value = reader.nextInt();
-                commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
+                if(command == "Lookup"){
+                    int variableID= reader.nextInt();
+                    LookUp(variableID);
+                }
+                if(command == "Release"){
+                    int variableID= reader.nextInt();
+                    Release(variableID);
+                }
+
+               // commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
                 numberOfCommands++;
         }
         try {
@@ -93,7 +96,7 @@ public class Driver {
         }
     }
 
-    public int LookUp(int variableID){
+    public static int LookUp(int variableID){
 
         if (virtualMemoryManager.containsValue(variableID) == true)
         {
@@ -109,7 +112,7 @@ public class Driver {
         return -1;
     }
 
-    public void Release(int variableID){
+    public static void Release(int variableID){
 
         if (virtualMemoryManager.containsValue(variableID) == true)
         {
