@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,17 @@ public class Driver {
     public ArrayList<APICalls> getListOfCommands() {
         return commands;
     }
+
+    public ArrayList<APICalls> commandList = Driver.commands;
+
+    int value;
+    int variableID;
+    String command;
+
+    static HashMap<Integer, Integer> virtualMemoryManager = new HashMap<Integer, Integer>();
+    static HashMap <Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
+
+
     public static void main(String[] args){
         Scanner reader = null;
         try {
@@ -23,6 +35,15 @@ public class Driver {
 
         while(reader.hasNext()){
                 String command = reader.next();
+                if(command == "STORE"){
+                    int variableID= reader.nextInt();
+                    int value = reader.nextInt();
+
+                    Store(variableID, value);
+
+
+
+                }
                 int variableID= reader.nextInt();
                 int value = reader.nextInt();
                 commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
@@ -57,6 +78,55 @@ public class Driver {
             }
         }
     }
+
+    public static void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
+
+        if (virtualMemoryManager.size() > memorySize) //as long as the hashmap size is smaller than the memory, the value will be stored in the virtual memory manager if not itll be stored in the disk
+        {
+            virtualMemoryManager.put(variableID, value); //trying to add the value of store
+            System.out.println("STORE successfully completed in the virtual memory manager: " + " Variable: " + variableID + ", Value: " + value);
+            return;
+        }
+        else{
+            diskDrive.put(variableID, value); //trying to add the value of store
+            System.out.println("STORE was completed in the disk drive as the virtual memory was full: " + " Variable: " + variableID + ", Value: " + value);
+        }
+    }
+
+    public int LookUp(int variableID){
+
+        if (virtualMemoryManager.containsValue(variableID) == true)
+        {
+            System.out.println("LOOKUP succesful. Found value in the virtual memory. Variable " + variableID + ", Value: " + virtualMemoryManager.get(value));
+            return virtualMemoryManager.get(value);
+        }
+
+        if (diskDrive.containsValue(variableID) == true)
+        {
+            System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
+            return diskDrive.get(value);
+        }
+        return -1;
+    }
+
+    public void Release(int variableID){
+
+        if (virtualMemoryManager.containsValue(variableID) == true)
+        {
+            System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + virtualMemoryManager.get(value));
+            // return virtualMemoryManager.get(value);
+            virtualMemoryManager.remove(variableID);
+        }
+
+        if (diskDrive.containsValue(variableID) == true)
+        {
+            System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
+            // return diskDrive.get(value);
+            diskDrive.remove(variableID);
+        }
+        // return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?
+    }
+
 }
 
 
