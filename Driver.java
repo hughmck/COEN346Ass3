@@ -15,7 +15,7 @@ public class Driver {
 
     //public ArrayList<APICalls> commandList = Driver.commands;
 
-    int value;
+    static int value;
     int variableID;
     String command;
 
@@ -48,6 +48,7 @@ public class Driver {
                     int variableID= reader.nextInt();
                     Release(variableID);
                 }
+
 
                // commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
                 numberOfCommands++;
