@@ -33,18 +33,18 @@ public class Driver {
             e.printStackTrace();
         }
 
-        while(reader.hasNext()){
+        while(reader.hasNext()){ //need to put in a for loop which iterates through all the lines
                 String command = reader.next();
-                if(command == "Store"){
+                while(command == "Store"){
                     int variableID= reader.nextInt();
                     int value = reader.nextInt();
                     Store(variableID, value);
                 }
-                if(command == "Lookup"){
+                while(command == "Lookup"){
                     int variableID= reader.nextInt();
                     LookUp(variableID);
                 }
-                if(command == "Release"){
+                while(command == "Release"){
                     int variableID= reader.nextInt();
                     Release(variableID);
                 }
