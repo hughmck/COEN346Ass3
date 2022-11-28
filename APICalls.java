@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class APICalls {
 
@@ -10,8 +11,8 @@ public class APICalls {
     int variableID;
     String command;
 
-    APICalls virtualMemoryManager[] = new APICalls[Driver.memorySize];
-    APICalls diskDrive[] = new APICalls[1000];
+    HashMap <Integer, Integer> virtualMemoryManager = new HashMap<Integer, Integer>();
+    HashMap <Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
 
     APICalls(String command, int variableID, int value){
         this.command  = command;
@@ -22,42 +23,63 @@ public class APICalls {
     public void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
         this.variableID = variableID;
         this.value = value;
-        for (int i = 0; i<Driver.memorySize; i++) //going through the length of the driver memorysize (virtual memory maneger size)
+        for (int i = 0; i<Driver.memorySize; i++) //going through the length of the driver memorysize (virtual memory maneger size) not sure if this for loop is needed
         {
-            if (i != virtualMemoryManager.length - 1) //checking to see if its at the last index in the loop, as long as its not, add the values
+            if (virtualMemoryManager.size() >= Driver.memorySize) //as long as the hashmap size is smaller than the memory, the value will be stored in the virtual memory manager if not itll be stored in the disk
             {
-                //virtualMemoryManager[i] = new APICalls(); //trying to add the value of store
-                System.out.println("STORE (Found a Spot in Main Memory):" + " Variable: " + variableID + ", Value: " + value);
+
+                virtualMemoryManager.put(variableID, value); //trying to add the value of store
+                System.out.println("STORE successfully completed in the virtual memory manager: " + " Variable: " + variableID + ", Value: " + value);
                 return;
             }
             else{
-                //virtualMemoryManager[i] = new APICalls(); //trying to add the value of store into the disk drive if the virtual memory manager is full
-                System.out.println("STORE (Virtual Memory was full, adding to disk drive):" + " Variable: " + variableID + ", Value: " + value);            }
+                diskDrive.put(variableID, value); //trying to add the value of store
+                System.out.println("STORE was completed in the disk drive as the virtual memory was full: " + " Variable: " + variableID + ", Value: " + value);
+            }
         }
     }
 
     public int LookUp(int variableID){
-        for (int i = 0; i<Driver.memorySize; i++)
+        for (int i = 0; i<virtualMemoryManager.size(); i++)
         {
-            if (virtualMemoryManager[i].getID() == variableID)
+            if (virtualMemoryManager.getID() == variableID)
             {
-                System.out.println("LOOKUP (Found Variable in Main Memory): Variable " + variableID + ", Value: " + virtualMemoryManager[i].getValue());
-                return virtualMemoryManager[i].getValue();
+                System.out.println("LOOKUP succesful. Found value in the virtual memory. Variable " + variableID + ", Value: " + virtualMemoryManager.getValue());
+                return virtualMemoryManager.get(value);
+            }
+        }
+        for (int i = 0; i<diskDrive.size(); i++)
+        {
+            if (diskDrive.getID() == variableID)
+            {
+                System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + virtualMemoryManager.getValue());
+                return diskDrive.get(value);
             }
         }
         return -1;
     }
 
-    public void Release(int variableID){
+    public int Release(int variableID){
+
         for (int i = 0; i<Driver.memorySize; i++)
         {
-            if (virtualMemoryManager[i].getID() == variableID)
+            if (virtualMemoryManager.getID() == variableID)
             {
-                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + String.valueOf(virtualMemoryManager[i].getValue()));
-                virtualMemoryManager[i] = null; //release the object
-                return;
+                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + String.valueOf(virtualMemoryManager.getValue());
+                return virtualMemoryManager.get(value);
+                virtualMemoryManager.remove(variableID);
             }
         }
+        for (int i = 0; i<diskDrive.size(); i++)
+        {
+            if (diskDrive.getID() == variableID)
+            {
+                System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + virtualMemoryManager.getValue());
+                return diskDrive.get(value);
+                diskDrive.remove(variableID);
+            }
+        }
+        return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?
     }
     public void run(ArrayList<APICalls> commandList) { //trying to run through the list of commands received from driver file
         for (int i = 0; i < commandList.size(); i++) {
