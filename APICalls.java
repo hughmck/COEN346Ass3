@@ -70,6 +70,7 @@ public class APICalls {
         }
         // return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?
     }
+
     public void run(ArrayList<APICalls> commandList) { //trying to run through the list of commands received from driver file
         for (int i = 0; i < commandList.size(); i++) {
             if (commandList.get(i).equals("Store")) {

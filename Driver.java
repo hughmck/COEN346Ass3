@@ -25,7 +25,7 @@ public class Driver {
                 String command = reader.next();
                 int variableID= reader.nextInt();
                 int value = reader.nextInt();
-                commands.add(new APICalls(command, variableID, value)); //need a command which can take release 1 (doesnt have 3 attributes)
+                commands.add(new APICalls(command, variableID, value)); //need a command which can take release 1 (doesnt have 3 attributes), currently bugs out at line 4
                 numberOfCommands++;
         }
         try {
