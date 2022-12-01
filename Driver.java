@@ -9,6 +9,12 @@ public class Driver {
     public static int numberOfCommands;
     public static int memorySize;
 
+    public static String storeString = "Store";
+
+    public static String lookupString = "Lookup";
+
+    public static String releaseString = "Release";
+
     //public ArrayList<APICalls> getListOfCommands() {
      //   return commands;
     //}
@@ -35,20 +41,19 @@ public class Driver {
 
         while(reader.hasNext()){ //need to put in a for loop which iterates through all the lines
                 String command = reader.next();
-                while(command == "Store"){
+                while(command.equals(storeString)){
                     int variableID= reader.nextInt();
                     int value = reader.nextInt();
                     Store(variableID, value);
                 }
-                while(command == "Lookup"){
+                while(command.equals(lookupString)){
                     int variableID= reader.nextInt();
                     LookUp(variableID);
                 }
-                while(command == "Release"){
+                while(command.equals(releaseString)){
                     int variableID= reader.nextInt();
                     Release(variableID);
                 }
-
 
                // commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
                 numberOfCommands++;
