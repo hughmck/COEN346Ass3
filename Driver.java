@@ -90,7 +90,8 @@ public class Driver {
             for(int i=0;i<numberOfProcesses;i++){
                 int arrivalTime= reader.nextInt();
                 int executionTime = reader.nextInt();
-                processes.add(new Process(arrivalTime, executionTime, "Waiting", false));
+                processes.add(new Process(arrivalTime, executionTime, "Waiting", false)); //thinking of sorting them based on arrival time
+                
             }
         }
     }

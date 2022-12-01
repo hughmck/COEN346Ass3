@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Process extends Thread {
+public class Process extends Thread{
 
     public static String waitingString = "Waiting";
 
@@ -8,6 +8,7 @@ public class Process extends Thread {
 
     public static String releaseString = "Release";
     ArrayList<Process> procList = Driver.processes;
+
 
     public class ProcessSorter implements Comparator<Process> { //wanted to use this to compare the arrival time
 
@@ -66,35 +67,24 @@ public class Process extends Thread {
         this.isComplete = false;
     }
 
-
-
-
-
-
     public void run(){
 
-        for (Process process : procList) {
-            // If its the first time running a process, set isStarted to true
-            if(process.processStatus.equals(waitingString)) {
+        for (Process process : procList) { //do i need to use index[0]?
+            if(process.processStatus.equals(waitingString)) { //checking to see if the first process is waiting
+                System.out.print("Time " + Clock.secondsGoneBy + ", "); //output the current time on the clock
+                process.processStatus = "Started"; //start the process
+            }
+
+            while(process.executionTime > 0) { //while the process has execution time left, run it
                 System.out.print("Time " + Clock.secondsGoneBy + ", ");
-                process.processStatus = "Started";
+                process.run(); //is this going to run 3 times for a thread that has an execution time of 3 seconds?
+                process.executionTime--;
+                Clock.secondsGoneBy++;
             }
 
-            if(process.executionTime < Clock.secondsGoneBy) {
-                System.out.print("Time " + Clock.secondsGoneBy + ", ");
-                process.run();
-            }
-            else {
-                process.run();
-            }
-
-            this.currentTime += quantumPerProcess; //need to decrement the current execution time of the process
-
-            // If the process is finished, remove it from the queue
-            if (process.executionTime == 0) {
-                System.out.println("Time " + Clock.secondsGoneBy + ", Process " + process.processID + " has been finished");
+            if (process.executionTime == 0) { //once the process has finished, remove it
+                System.out.println("Time " + Clock.secondsGoneBy + ", Process " + process.processID + " has been finished"); //need to input a process ID?
                 this.procList.remove(process);
-                // If the process is not finished, pause it , and move it to the back of the queue
             }
         }
     }
