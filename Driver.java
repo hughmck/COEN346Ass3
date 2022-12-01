@@ -143,6 +143,16 @@ public class Driver {
         // return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?
     }
 
+    public void setList(ArrayList processes) {
+        this.processes = processes;
+    }
+
+    //getter
+    public ArrayList getList() {
+        return processes;
+    }
+
+
 }
 
 
