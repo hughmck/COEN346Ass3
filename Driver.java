@@ -15,6 +15,9 @@ public class Driver {
 
     public static String releaseString = "Release";
 
+    public static ArrayList<Process> processes = new ArrayList<Process>(); //created using arraylist for now, but may use hashmap so we can easily sort?
+
+
     //public ArrayList<APICalls> getListOfCommands() {
      //   return commands;
     //}
@@ -29,47 +32,50 @@ public class Driver {
     static HashMap <Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
 
 
+    //commented out the driver code for the other two files, not sure why they dont work stacked together
+
     public static void main(String[] args){
         Scanner reader = null;
-        try {
-            reader = new Scanner(new File(
-                    "commands.txt"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            reader = new Scanner(new File(
+//                    "commands.txt"));
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        while(reader.hasNext()){ //need to put in a for loop which iterates through all the lines
+//                String command = reader.next();
+//                while(command.equals(storeString)){
+//                    int variableID= reader.nextInt();
+//                    int value = reader.nextInt();
+//                    Store(variableID, value);
+//                }
+//                while(command.equals(lookupString)){
+//                    int variableID= reader.nextInt();
+//                    LookUp(variableID);
+//                }
+//                while(command.equals(releaseString)){
+//                    int variableID= reader.nextInt();
+//                    Release(variableID);
+//                }
+//
+//               // commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
+//                numberOfCommands++;
+//        }
+//        try {
+//            reader = new Scanner(new File(
+//                    "memeconfig.txt"));
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        while(reader.hasNext()){
+//            memorySize= reader.nextInt();
+//            System.out.println(memorySize);
+//        }
 
-        while(reader.hasNext()){ //need to put in a for loop which iterates through all the lines
-                String command = reader.next();
-                while(command.equals(storeString)){
-                    int variableID= reader.nextInt();
-                    int value = reader.nextInt();
-                    Store(variableID, value);
-                }
-                while(command.equals(lookupString)){
-                    int variableID= reader.nextInt();
-                    LookUp(variableID);
-                }
-                while(command.equals(releaseString)){
-                    int variableID= reader.nextInt();
-                    Release(variableID);
-                }
-
-               // commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
-                numberOfCommands++;
-        }
-        try {
-            reader = new Scanner(new File(
-                    "memeconfig.txt"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        while(reader.hasNext()){
-            memorySize= reader.nextInt();
-            System.out.println(memorySize);
-        }
         try {
             reader = new Scanner(new File(
                     "processes.txt"));
@@ -82,8 +88,9 @@ public class Driver {
             int numberOfCores = reader.nextInt();
             int numberOfProcesses = reader.nextInt();
             for(int i=0;i<numberOfProcesses;i++){
-                int readyTime= reader.nextInt();
-                int processingTime = reader.nextInt();
+                int arrivalTime= reader.nextInt();
+                int executionTime = reader.nextInt();
+                processes.add(new Process(arrivalTime, executionTime, "Waiting", false));
             }
         }
     }
