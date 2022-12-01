@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Process extends Thread{
+public class Process extends Thread implements Comparable<Process>{
 
     public static String waitingString = "Waiting";
 
@@ -9,14 +9,12 @@ public class Process extends Thread{
     public static String releaseString = "Release";
     ArrayList<Process> procList = Driver.processes;
 
+    public int compareTo(Process compareProcesses) { //trying to have this put the processes in ascending order based on arrival time
 
-    public class ProcessSorter implements Comparator<Process> { //wanted to use this to compare the arrival time
+        int compareArrivalTime = ((Process) compareProcesses).getArrivalTime();
 
-        public int compare(Process process1, Process process2) {
-            return Integer.compare(process1.getArrivalTime(), process2.getArrivalTime());
-        }
+        return this.arrivalTime - compareArrivalTime;
     }
-
 
     public static ArrayList<Process> listOfAllProcesses;
 

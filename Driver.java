@@ -91,7 +91,7 @@ public class Driver {
                 int arrivalTime= reader.nextInt();
                 int executionTime = reader.nextInt();
                 processes.add(new Process(arrivalTime, executionTime, "Waiting", false)); //thinking of sorting them based on arrival time
-                
+
             }
         }
     }
@@ -152,8 +152,6 @@ public class Driver {
     public ArrayList getList() {
         return processes;
     }
-
-
 }
 
 
