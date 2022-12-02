@@ -7,20 +7,31 @@ public class Process extends Thread implements Comparable<Process>{
     public static String lookupString = "Lookup";
 
     public static String releaseString = "Release";
-    ArrayList<Process> procList = Driver.processes;
-
-    public int compareTo(Process compareProcesses) { //trying to have this put the processes in ascending order based on arrival time
-
-        int compareArrivalTime = ((Process) compareProcesses).getArrivalTime();
-
-        return this.arrivalTime - compareArrivalTime;
-    }
-
-    public static ArrayList<Process> listOfAllProcesses;
-
+    LinkedList<Process> procList = Driver.processes;
     public LinkedList<Process> readyQueue;
 
-    public void addProcessesToReadyQueue(ArrayList<Process>procList) {
+//    public int compareTo(Process compareProcesses) { //trying to have this put the processes in ascending order based on arrival time
+//
+//        int compareArrivalTime = ((Process) compareProcesses).getArrivalTime();
+//
+//        return this.arrivalTime - compareArrivalTime; //this should return the processes in ascending order
+//    }
+
+    @Override public int compareTo(Process processes)
+    {
+        if (arrivalTime > processes.arrivalTime) {
+            return 1;
+        }
+        else if (arrivalTime == processes.arrivalTime) {
+            return 0;
+        }
+        else {
+            return -1;
+        }
+    }
+
+
+    public void addProcessesToReadyQueue(ArrayList<Process>procList) { //this should add
         for (Process process: procList) {
             if(process.arrivalTime <= Clock.secondsGoneBy) {
                 readyQueue.clear();
@@ -28,13 +39,6 @@ public class Process extends Thread implements Comparable<Process>{
             }
         }
     }
-
-    public void runProcesses(LinkedList<Process>readyQueue){
-
-
-    }
-
-    int processingTime;
 
     int getArrivalTime() {
         return arrivalTime;
@@ -68,20 +72,20 @@ public class Process extends Thread implements Comparable<Process>{
     public void run(){
 
         for (Process process : procList) { //do i need to use index[0]?
-            if(process.processStatus.equals(waitingString)) { //checking to see if the first process is waiting
+            if(process.processStatus.equals(waitingString) && process.arrivalTime == Clock.secondsGoneBy) { //checking to see if the first process is waiting
                 System.out.print("Time " + Clock.secondsGoneBy + ", "); //output the current time on the clock
                 process.processStatus = "Started"; //start the process
+                process.run();
             }
 
             while(process.executionTime > 0) { //while the process has execution time left, run it
                 System.out.print("Time " + Clock.secondsGoneBy + ", ");
-                process.run(); //is this going to run 3 times for a thread that has an execution time of 3 seconds?
                 process.executionTime--;
                 Clock.secondsGoneBy++;
             }
 
             if (process.executionTime == 0) { //once the process has finished, remove it
-                System.out.println("Time " + Clock.secondsGoneBy + ", Process " + process.processID + " has been finished"); //need to input a process ID?
+                System.out.println("Time " + Clock.secondsGoneBy + ", Process has been finished"); //need to input a process ID?
                 this.procList.remove(process);
             }
         }
