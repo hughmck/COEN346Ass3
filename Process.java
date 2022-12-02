@@ -10,13 +10,6 @@ public class Process extends Thread implements Comparable<Process>{
     LinkedList<Process> procList = Driver.processes;
     public LinkedList<Process> readyQueue;
 
-//    public int compareTo(Process compareProcesses) { //trying to have this put the processes in ascending order based on arrival time
-//
-//        int compareArrivalTime = ((Process) compareProcesses).getArrivalTime();
-//
-//        return this.arrivalTime - compareArrivalTime; //this should return the processes in ascending order
-//    }
-
     @Override public int compareTo(Process processes)
     {
         if (arrivalTime > processes.arrivalTime) {
@@ -38,10 +31,6 @@ public class Process extends Thread implements Comparable<Process>{
                 readyQueue.addLast(process);
             }
         }
-    }
-
-    int getArrivalTime() {
-        return arrivalTime;
     }
 
     int getExecutionTime() {
@@ -71,8 +60,12 @@ public class Process extends Thread implements Comparable<Process>{
 
     public void run(){
 
-        for (Process process : procList) { //do i need to use index[0]?
-            if(process.processStatus.equals(waitingString) && process.arrivalTime == Clock.secondsGoneBy) { //checking to see if the first process is waiting
+        for (Process process : procList) {
+            if(process.arrivalTime != Clock.secondsGoneBy){
+                Clock.secondsGoneBy++; //increments the clock until it reaches the first arrival time
+            }
+
+            if(process.processStatus.equals(waitingString) && process.arrivalTime == Clock.secondsGoneBy) { //checking to see if the first process is waiting, if the processes' arrival time is equal to the clock, run it
                 System.out.print("Time " + Clock.secondsGoneBy + ", "); //output the current time on the clock
                 process.processStatus = "Started"; //start the process
                 process.run();

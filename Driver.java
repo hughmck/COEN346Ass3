@@ -91,7 +91,7 @@ public class Driver {
                 processes.add(new Process(arrivalTime, executionTime, "Waiting", false)); //adding the processes to a LinkedList
             }
         }
-        System.out.println("UnSorted List");
+        System.out.println("UnSorted List"); //sorts the list based on arrival time FIFO
         for (Process p : processes) {
             System.out.println(p.arrivalTime + " " + p.executionTime + " "
                     + p.processStatus);
