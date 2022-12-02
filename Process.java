@@ -58,6 +58,11 @@ public class Process extends Thread implements Comparable<Process>{
         this.isComplete = false;
     }
 
+    public static void printStatus()  {
+        System.out.println("Current Time: " + Clock.secondsGoneBy);
+        System.out.println("Process currently being completed: " + this.procList); //need to figure out which process is being worked on
+    }
+
     public void run(){
 
         for (Process process : procList) {
@@ -79,6 +84,7 @@ public class Process extends Thread implements Comparable<Process>{
 
             if (process.executionTime == 0) { //once the process has finished, remove it
                 System.out.println("Time " + Clock.secondsGoneBy + ", Process has been finished"); //need to input a process ID?
+                process.isComplete = true;
                 this.procList.remove(process);
             }
         }

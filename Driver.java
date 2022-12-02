@@ -102,6 +102,10 @@ public class Driver {
             System.out.println(p.arrivalTime + " " + p.executionTime + " "
                     + p.processStatus);
         }
+        while (processes.size() > 0) {
+            Process.start(); //not sure why the run method isnt working
+            Process.printStatus();
+        }
     }
 
 
