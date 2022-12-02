@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,7 +13,7 @@ public class Driver {
 
     public static String releaseString = "Release";
 
-    public static ArrayList<Process> processes = new ArrayList<Process>(); //created using arraylist for now, but may use hashmap so we can easily sort?
+    public static LinkedList<Process> processes = new LinkedList<Process>(); //created using arraylist for now, but may use hashmap so we can easily sort?
 
 
     //public ArrayList<APICalls> getListOfCommands() {
@@ -90,11 +88,27 @@ public class Driver {
             for(int i=0;i<numberOfProcesses;i++){
                 int arrivalTime= reader.nextInt();
                 int executionTime = reader.nextInt();
-                processes.add(new Process(arrivalTime, executionTime, "Waiting", false)); //thinking of sorting them based on arrival time
-
+                processes.add(new Process(arrivalTime, executionTime, "Waiting", false)); //adding the processes to a LinkedList
             }
         }
+        System.out.println("UnSorted List"); //sorts the list based on arrival time FIFO
+        for (Process p : processes) {
+            System.out.println(p.arrivalTime + " " + p.executionTime + " "
+                    + p.processStatus);
+        }
+        Collections.sort(processes);
+        System.out.println("Sorted List");
+        for (Process p : processes) {
+            System.out.println(p.arrivalTime + " " + p.executionTime + " "
+                    + p.processStatus);
+        }
+        while (processes.size() > 0) {
+            Process.start(); //not sure why the run method isnt working
+            Process.printStatus();
+        }
     }
+
+
 
     public static void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
 
@@ -142,15 +156,6 @@ public class Driver {
             diskDrive.remove(variableID);
         }
         // return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?
-    }
-
-    public void setList(ArrayList processes) {
-        this.processes = processes;
-    }
-
-    //getter
-    public ArrayList getList() {
-        return processes;
     }
 }
 
