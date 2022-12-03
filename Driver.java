@@ -1,13 +1,20 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.io.File;
 import java.io.IOException;
 
 public class Driver {
-    public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
+    //public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
     public static int numberOfCommands;
     public static int memorySize;
+
+    public static String storeString = "Store";
+
+    public static String lookupString = "Lookup";
+
+    public static String releaseString = "Release";
+
+    public static LinkedList<Process> processes = new LinkedList<Process>(); //created using arraylist for now, but may use hashmap so we can easily sort?
+
 
     //public ArrayList<APICalls> getListOfCommands() {
      //   return commands;
@@ -23,52 +30,50 @@ public class Driver {
     static HashMap <Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
 
 
-    public static void main(String[] args)
-    throws InterruptedException{
-    //    Clock c = new Clock();
-      //  c.start();
-        //c.join();
+    //commented out the driver code for the other two files, not sure why they dont work stacked together
+
+    public static void main(String[] args){
         Scanner reader = null;
-        try {
-            reader = new Scanner(new File(
-                    "commands.txt"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            reader = new Scanner(new File(
+//                    "commands.txt"));
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        while(reader.hasNext()){ //need to put in a for loop which iterates through all the lines
+//                String command = reader.next();
+//                while(command.equals(storeString)){
+//                    int variableID= reader.nextInt();
+//                    int value = reader.nextInt();
+//                    Store(variableID, value);
+//                }
+//                while(command.equals(lookupString)){
+//                    int variableID= reader.nextInt();
+//                    LookUp(variableID);
+//                }
+//                while(command.equals(releaseString)){
+//                    int variableID= reader.nextInt();
+//                    Release(variableID);
+//                }
+//
+//               // commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
+//                numberOfCommands++;
+//        }
+//        try {
+//            reader = new Scanner(new File(
+//                    "memeconfig.txt"));
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        while(reader.hasNext()){
+//            memorySize= reader.nextInt();
+//            System.out.println(memorySize);
+//        }
 
-        while(reader.hasNext()){ //need to put in a for loop which iterates through all the lines
-                String command = reader.next();
-                while(command == "Store"){
-                    int variableID= reader.nextInt();
-                    int value = reader.nextInt();
-                    Store(variableID, value);
-                }
-                while(command == "Lookup"){
-                    int variableID= reader.nextInt();
-                    LookUp(variableID);
-                }
-                while(command == "Release"){
-                    int variableID= reader.nextInt();
-                    Release(variableID);
-                }
-
-
-               // commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
-                numberOfCommands++;
-        }
-        try {
-            reader = new Scanner(new File(
-                    "memconfig.txt"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        while(reader.hasNext()){
-            memorySize= reader.nextInt();
-            System.out.println(memorySize);
-        }
         try {
             reader = new Scanner(new File(
                     "processes.txt"));
@@ -81,11 +86,29 @@ public class Driver {
             int numberOfCores = reader.nextInt();
             int numberOfProcesses = reader.nextInt();
             for(int i=0;i<numberOfProcesses;i++){
-                int readyTime= reader.nextInt();
-                int processingTime = reader.nextInt();
+                int arrivalTime= reader.nextInt();
+                int executionTime = reader.nextInt();
+                processes.add(new Process(arrivalTime, executionTime, "Waiting", false)); //adding the processes to a LinkedList
             }
         }
+        System.out.println("UnSorted List"); //sorts the list based on arrival time FIFO
+        for (Process p : processes) {
+            System.out.println(p.arrivalTime + " " + p.executionTime + " "
+                    + p.processStatus);
+        }
+        Collections.sort(processes);
+        System.out.println("Sorted List");
+        for (Process p : processes) {
+            System.out.println(p.arrivalTime + " " + p.executionTime + " "
+                    + p.processStatus);
+        }
+        while (processes.size() > 0) {
+            Process.start(); //not sure why the run method isnt working
+            Process.printStatus();
+        }
     }
+
+
 
     public static void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
 
@@ -134,7 +157,6 @@ public class Driver {
         }
         // return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?
     }
-
 }
 
 
