@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Driver {
-    //public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
+    public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
     public static int numberOfCommands;
     public static int memorySize;
 
@@ -32,7 +32,11 @@ public class Driver {
 
     //commented out the driver code for the other two files, not sure why they dont work stacked together
 
-    public static void main(String[] args){
+    public static void main(String[] args)
+    throws InterruptedException{
+        Clock c = new Clock();
+        c.start();
+        c.join();
         Scanner reader = null;
 //        try {
 //            reader = new Scanner(new File(
