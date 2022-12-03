@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Driver {
-    //public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
+    public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
     public static int numberOfCommands;
     public static int memorySize;
 
@@ -23,7 +23,11 @@ public class Driver {
     static HashMap <Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
 
 
-    public static void main(String[] args){
+    public static void main(String[] args)
+    throws InterruptedException{
+    //    Clock c = new Clock();
+      //  c.start();
+        //c.join();
         Scanner reader = null;
         try {
             reader = new Scanner(new File(
@@ -55,7 +59,7 @@ public class Driver {
         }
         try {
             reader = new Scanner(new File(
-                    "memeconfig.txt"));
+                    "memconfig.txt"));
         }
         catch (IOException e) {
             e.printStackTrace();
