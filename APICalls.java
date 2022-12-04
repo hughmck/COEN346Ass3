@@ -3,13 +3,13 @@ import java.util.HashMap;
 
 public class APICalls {
 
-   Driver commands = new Driver();
+    Driver commands = new Driver();
 
     public ArrayList<APICalls> commandList = Driver.commands;
 
     int value;
     int variableID;
-   String command;
+    String command;
 
     HashMap <Integer, Integer> virtualMemoryManager = new HashMap<Integer, Integer>();
     HashMap <Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
@@ -52,11 +52,11 @@ public class APICalls {
         return -1;
     }
 
-   public void Release(int variableID){
+    public void Release(int variableID){
         this.variableID = variableID;
 
         if (virtualMemoryManager.containsValue(variableID) == true)
-       {
+        {
             System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + virtualMemoryManager.get(value));
             // return virtualMemoryManager.get(value);
             virtualMemoryManager.remove(variableID);
@@ -65,7 +65,7 @@ public class APICalls {
         if (diskDrive.containsValue(variableID) == true)
         {
             System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
-             // return diskDrive.get(value);
+            // return diskDrive.get(value);
             diskDrive.remove(variableID);
         }
         // return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?

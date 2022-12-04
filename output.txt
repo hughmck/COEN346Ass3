@@ -1,0 +1,14 @@
+STORE was completed in the disk drive as the virtual memory was full:  Variable: 0, Value: 5
+STORE was completed in the disk drive as the virtual memory was full:  Variable: 1, Value: 3
+STORE was completed in the disk drive as the virtual memory was full:  Variable: 2, Value: 7
+UnSorted List
+2 3 Waiting
+1 2 Waiting
+4 3 Waiting
+Sorted List
+1 2 Waiting
+2 3 Waiting
+4 3 Waiting
+Current Time: 0
+Process currently being completed: [Thread[#22,Thread-1,5,main], Thread[#21,Thread-0,5,main], Thread[#23,Thread-2,5,main]]Time 1, 
+Time 1, Time 2, Time 3, Process has been finished
