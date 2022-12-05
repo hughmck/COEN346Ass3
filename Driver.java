@@ -94,7 +94,7 @@ public class Driver {
                 if (command.equals(storeString)) {
                     int variableID = reader.nextInt();
                     int value = reader.nextInt();
-                    clock.sleep(1000);
+//                    clock.sleep(1000);
                     accessTime = clock.getSecondsGoneBy();
                     Store(variableID, value, accessTime);
                     System.out.println(virtualMemoryManager + " is in memory");
@@ -102,15 +102,17 @@ public class Driver {
                 }
                 if (command.equals(lookupString)) {
                     int variableID = reader.nextInt();
+                    sem.acquire();
+                    clock.sleep(1000);
                     System.out.println("The variable ID being checked is " + variableID);
                     System.out.println(virtualMemoryManager + " is in memory");
                     System.out.println(diskDrive + " is in disk");
-                    clock.sleep(1000);
-                    LookUp(variableID);
+                    LookUp(variableID);  //need to add semaphore here because memory is being accessed at the same time
+                    sem.release();
                 }
                 if (command.equals(releaseString)) {
                     int variableID = reader.nextInt();
-                    clock.sleep(1000);
+//                    clock.sleep(1000);
                     Release(variableID);
                 }
 
@@ -181,14 +183,17 @@ public class Driver {
                 return virtualMemoryManager.get(variableID);
             }
 
-            else if (diskDrive.containsValue(variableID)) {
+            else if (diskDrive.containsKey(variableID)) {
                 System.out.println("LOOKUP successful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(variableID));
                 fw.write("LOOKUP successful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(variableID));
                 Driver.fw.write("\n");
-                virtualMemoryManager.remove(minValue().getKey()); // removing the least recently accessed from memory
+                int tempKey = minValue().getKey();
+                int tempValue = virtualMemoryManager.get(tempKey);
+                Release((minValue().getKey())); // removing the least recently accessed from memory
                 virtualMemoryManager.put(variableID, diskDrive.get(variableID));
                 diskDrive.remove(variableID);
-                diskDrive.put(minValue().getKey(),minValue().getValue()); //addding least recently accessed to disk
+                diskDrive.put(tempKey, tempValue); //addding least recently accessed to disk
+                System.out.println("Min key is " + tempKey + " and the value with that key is " +tempValue);
 
                 //adding the lookup variable and value to memory
                 return virtualMemoryManager.get(variableID);
@@ -196,24 +201,24 @@ public class Driver {
             return -1;
         }
 
-        public static void Release ( int variableID) throws IOException {
+        public static void Release (int variableID) throws IOException {
 
-            if (virtualMemoryManager.containsValue(variableID) == true) {
-                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + virtualMemoryManager.get(value));
-                fw.write("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + virtualMemoryManager.get(value));
+//            if (virtualMemoryManager.containsValue(variableID) == true) {
+                System.out.println("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + virtualMemoryManager.get(variableID));
+                fw.write("RELEASE (From Main Memory)" + " Variable: " + variableID + ", Value: " + virtualMemoryManager.get(variableID));
                 Driver.fw.write("\n");
-                // return virtualMemoryManager.get(value);
                 virtualMemoryManager.remove(variableID);
-            }
 
-            if (diskDrive.containsValue(variableID) == true) {
-                System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
-                fw.write("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
-                Driver.fw.write("\n");
-                // return diskDrive.get(value);
-                diskDrive.remove(variableID);
-            }
-            // return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?
+//            }
+
+//            if (diskDrive.containsValue(variableID) == true) {
+//                System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
+//                fw.write("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
+//                Driver.fw.write("\n");
+//                // return diskDrive.get(value);
+//                diskDrive.remove(variableID);
+//            }
+//            // return variableID; //would this need to return null if the release isnt found in either the main memory or VMM?
         }
 
     public static Map.Entry<Integer, Integer> minValue() { //gets the lowest value for variable accessTime
@@ -221,10 +226,12 @@ public class Driver {
         Map.Entry<Integer, Integer> minEntry = null;
 
         for (Map.Entry<Integer, Integer> entry : accessTable.entrySet()) {
-
-            if (minEntry == null
-                    || entry.getValue().compareTo(minEntry.getValue()) < 0) {
-                minEntry = entry;
+            if (virtualMemoryManager.containsKey(entry.getKey())) //only gets the minimum from the memory
+            {
+                if (minEntry == null
+                        || entry.getValue().compareTo(minEntry.getValue()) < 0) {
+                    minEntry = entry;
+                }
             }
         }
         return minEntry;
