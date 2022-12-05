@@ -11,8 +11,12 @@ public class APICalls {
     int variableID;
     String command;
 
+    int access;
+
     HashMap <Integer, Integer> virtualMemoryManager = new HashMap<Integer, Integer>();
     HashMap <Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
+
+    HashMap<Integer, Integer> accessTable = new HashMap<>();
 
     APICalls(String command, int variableID, int value){
         this.command  = command;
@@ -38,13 +42,13 @@ public class APICalls {
     public int LookUp(int variableID){
         this.variableID = variableID;
 
-        if (virtualMemoryManager.containsValue(variableID) == true)
+        if (virtualMemoryManager.containsKey(variableID))
         {
             System.out.println("LOOKUP succesful. Found value in the virtual memory. Variable " + variableID + ", Value: " + virtualMemoryManager.get(value));
             return virtualMemoryManager.get(value);
         }
 
-        if (diskDrive.containsValue(variableID) == true)
+        if (diskDrive.containsValue(variableID))
         {
             System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
             return diskDrive.get(value);

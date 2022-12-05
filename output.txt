@@ -1,17 +1,8 @@
-STORE was completed in the disk drive as the virtual memory was full:  Variable: 0, Value: 5
-STORE was completed in the disk drive as the virtual memory was full:  Variable: 1, Value: 3
-STORE was completed in the disk drive as the virtual memory was full:  Variable: 2, Value: 7
+STORE successfully completed in the virtual memory manager:  Variable: 1, Value: 5
+STORE successfully completed in the virtual memory manager:  Variable: 2, Value: 3
+STORE was completed in the disk drive as the virtual memory was full:  Variable: 3, Value: 7
+LOOKUP successful. Found value in the virtual memory. Variable 2, Value: 3
+STORE was completed in the disk drive as the virtual memory was full:  Variable: 1, Value: 8
+LOOKUP successful. Found value in the virtual memory. Variable 1, Value: 5
 UnSorted List
-2 3 Waiting
-1 2 Waiting
-4 3 Waiting
 Sorted List
-1 2 Waiting
-2 3 Waiting
-4 3 Waiting
-Current Time: 0
-Time 1, Time 1, Process currently being completed: [Thread[#32,Thread-1,5,main], Thread[#31,Thread-0,5,main], Thread[#33,Thread-2,5,main]]
-Time 2, Current Time: 3
-Time 4, Process has been finished
-Process currently being completed: [Thread[#32,Thread-1,5,main], Thread[#31,Thread-0,5,main], Thread[#33,Thread-2,5,main]]
-Time 4, Process has been finished
