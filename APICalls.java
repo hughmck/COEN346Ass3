@@ -11,6 +11,8 @@ public class APICalls {
     int variableID;
     String command;
 
+    Boolean inUse;
+
     int access;
 
     HashMap <Integer, Integer> virtualMemoryManager = new HashMap<Integer, Integer>();
@@ -18,10 +20,11 @@ public class APICalls {
 
     HashMap<Integer, Integer> accessTable = new HashMap<>();
 
-    APICalls(String command, int variableID, int value){
+    APICalls(String command, int variableID, int value, Boolean inUse){
         this.command  = command;
         this.variableID = variableID;
         this.value = value;
+        this.inUse = false;
     }
 
     public void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive

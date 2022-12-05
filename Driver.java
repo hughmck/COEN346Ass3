@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class Driver {
+public class Driver{
     public static ArrayList<APICalls> commands = new ArrayList<APICalls>();
     public static int numberOfCommands;
     public static int memorySize;
@@ -37,6 +37,7 @@ public class Driver {
     static int accessTime;
 
 
+
     static HashMap<Integer, Integer> virtualMemoryManager = new HashMap<Integer, Integer>();
     static HashMap<Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
 
@@ -57,7 +58,7 @@ public class Driver {
             e1.printStackTrace();
         }
 
-        String[] files = {"memconfig.txt", "commands.txt", "processes.txt" }; // needs to check the files in this order
+        String[] files = {"memconfig.txt", "processes.txt" , "commands.txt", }; // needs to check the files in this order
         for (String file : files) {
             Scanner reader = null;
             try {
@@ -73,53 +74,42 @@ public class Driver {
                 reader.close();
             } else if (file == "processes.txt") {
                 while (reader.hasNext()) {
+                    System.out.println("In processes");
                     int numberOfCores = reader.nextInt();
                     int numberOfProcesses = reader.nextInt();
                     for (int i = 0; i < numberOfProcesses; i++) {
                         int arrivalTime = reader.nextInt();
                         int executionTime = reader.nextInt();
-                        processes.add(new Process(arrivalTime, executionTime, "Waiting", false)); //adding the processes to a LinkedList
+                        Process p = new Process(arrivalTime, executionTime, "Waiting", false);
+                        processes.add(p); //adding the processes to a LinkedList
+                        p.start();
                         sem.acquire();
-                        clock.sleep(1000);
                         accessTime = clock.getSecondsGoneBy();
-                        System.out.println("Storing a value ");
 //                        Store(i + 1, arrivalTime + executionTime, accessTime);
                         sem.release();
                     }
                 }
                 reader.close();
             } else {
-            while (reader.hasNext()) { //need to put in a for loop which iterates through all the lines
+            while (reader.hasNext()) {//need to put in a for loop which iterates through all the lines
                 String command = reader.next();
                 if (command.equals(storeString)) {
+                    System.out.println("In Store data");
                     int variableID = reader.nextInt();
                     int value = reader.nextInt();
-//                    clock.sleep(1000);
-                    accessTime = clock.getSecondsGoneBy();
-                    Store(variableID, value, accessTime);
-                    System.out.println(virtualMemoryManager + " is in memory");
-                    System.out.println(diskDrive + " is in disk");
                 }
                 if (command.equals(lookupString)) {
+                    System.out.println("In look up data");
                     int variableID = reader.nextInt();
-                    sem.acquire();
-                    clock.sleep(1000);
-                    System.out.println("The variable ID being checked is " + variableID);
-                    System.out.println(virtualMemoryManager + " is in memory");
-                    System.out.println(diskDrive + " is in disk");
-                    LookUp(variableID);  //need to add semaphore here because memory is being accessed at the same time
-                    sem.release();
+                    accessTime = clock.getSecondsGoneBy();
                 }
                 if (command.equals(releaseString)) {
+                    System.out.println("In release data");
                     int variableID = reader.nextInt();
-//                    clock.sleep(1000);
-                    Release(variableID);
                 }
-
-                commands.add(new APICalls(command, variableID, value)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
+                commands.add(new APICalls(command, variableID, value, false)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
                 numberOfCommands++;
             }reader.close();
-
                 fw.write("UnSorted List"); //sorts the list based on arrival time FIFO
                 Driver.fw.write("\n");
                 System.out.println("UnSorted List"); //sorts the list based on arrival time FIFO
@@ -174,7 +164,7 @@ public class Driver {
             }
         }
 
-        public static int LookUp ( int variableID) throws IOException {
+        public static int LookUp ( int variableID, int accessTime) throws IOException {
 
             if (virtualMemoryManager.containsKey(variableID)) {
                 System.out.println("LOOKUP successful. Found value in the virtual memory. Variable " + variableID + ", Value: " + virtualMemoryManager.get(variableID));
@@ -198,6 +188,7 @@ public class Driver {
                 //adding the lookup variable and value to memory
                 return virtualMemoryManager.get(variableID);
             }
+//            accessTime = need to change accesTime
             return -1;
         }
 
@@ -236,6 +227,7 @@ public class Driver {
         }
         return minEntry;
     }
+
 }
 
 
