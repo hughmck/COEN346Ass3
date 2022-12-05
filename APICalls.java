@@ -11,15 +11,26 @@ public class APICalls {
     int variableID;
     String command;
 
+    Boolean inUse;
+
+    int access;
+
     HashMap <Integer, Integer> virtualMemoryManager = new HashMap<Integer, Integer>();
     HashMap <Integer, Integer> diskDrive = new HashMap<Integer, Integer>();
 
-    APICalls(String command, int variableID, int value){
+    HashMap<Integer, Integer> accessTable = new HashMap<>();
+
+    APICalls(String command, int variableID, int value, Boolean inUse){
         this.command  = command;
         this.variableID = variableID;
         this.value = value;
+        this.inUse = false;
     }
 
+    public void lock()
+    {
+        this.inUse = true;
+    }
     public void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
         this.variableID = variableID;
         this.value = value;
@@ -38,13 +49,13 @@ public class APICalls {
     public int LookUp(int variableID){
         this.variableID = variableID;
 
-        if (virtualMemoryManager.containsValue(variableID) == true)
+        if (virtualMemoryManager.containsKey(variableID))
         {
             System.out.println("LOOKUP succesful. Found value in the virtual memory. Variable " + variableID + ", Value: " + virtualMemoryManager.get(value));
             return virtualMemoryManager.get(value);
         }
 
-        if (diskDrive.containsValue(variableID) == true)
+        if (diskDrive.containsValue(variableID))
         {
             System.out.println("LOOKUP succesful. Found value in the disk drive. Variable " + variableID + ", Value: " + diskDrive.get(value));
             return diskDrive.get(value);

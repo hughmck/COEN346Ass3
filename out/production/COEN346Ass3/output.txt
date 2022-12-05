@@ -1,0 +1,11 @@
+UnSorted List
+Time 2, Time 2, Time 2, 2 3 Waiting
+1 2 Process 2: Started.
+Time 2, Time 2, Time 2, 4 3 Waiting
+STORE successfully completed in the virtual memory manager:  Variable: 2, Value: 3
+Time 3, Sorted List
+STORE successfully completed in the virtual memory manager:  Variable: 1, Value: 5
+STORE was completed in the disk drive as the virtual memory was full:  Variable: 3, Value: 7
+Time 4, 1 2 Process 2: Started.
+Time 5, 2 0 Process 1: Started.
+4 3 Waiting

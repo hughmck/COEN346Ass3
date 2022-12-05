@@ -1,17 +1,23 @@
-STORE was completed in the disk drive as the virtual memory was full:  Variable: 0, Value: 5
-STORE was completed in the disk drive as the virtual memory was full:  Variable: 1, Value: 3
-STORE was completed in the disk drive as the virtual memory was full:  Variable: 2, Value: 7
 UnSorted List
+Time 2, Process1 : Started.
+Time 1, Process2 : Started.
+Time 2, Process1 : Started.
 2 3 Waiting
-1 2 Waiting
+Time 2, Process1 : Started.
+1 2 Process 2: Started.
 4 3 Waiting
+Time 2, Time 2, Time 2, STORE successfully completed in the virtual memory manager:  Variable: 2, Value: 3
 Sorted List
-1 2 Waiting
-2 3 Waiting
+STORE successfully completed in the virtual memory manager:  Variable: 1, Value: 5
+STORE was completed in the disk drive as the virtual memory was full:  Variable: 3, Value: 7
+1 2 Process 2: Started.
+Time 4, Time 5, Time 3, 2 0 Process 1: Started.
 4 3 Waiting
-Current Time: 0
-Time 1, Time 1, Process currently being completed: [Thread[#32,Thread-1,5,main], Thread[#31,Thread-0,5,main], Thread[#33,Thread-2,5,main]]
-Time 2, Current Time: 3
-Time 4, Process has been finished
-Process currently being completed: [Thread[#32,Thread-1,5,main], Thread[#31,Thread-0,5,main], Thread[#33,Thread-2,5,main]]
-Time 4, Process has been finished
+LOOKUP successful. Found value in the disk drive. Variable 3, Value: 7
+RELEASE (From Main Memory) Variable: 1, Value: 5
+LOOKUP successful. Found value in the virtual memory. Variable 2, Value: 3
+Time 5, Process has been finished
+Time 5, Process has been finished
+Time 5, Process has been finished
+Time 5, Clock: 6 , Clock: 7 , Clock: 8 , Clock: 9 , Clock: 10 , Clock: 11 , Clock: 12 ,
+Process finished with exit code -1
