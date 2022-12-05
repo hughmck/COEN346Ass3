@@ -148,8 +148,9 @@ public class Driver {
 
 
     public static void Store(int variableID, int value) throws IOException{//if the main memory is not full, add it there. if it is full, add it to the disk drive
-
-        if (virtualMemoryManager.size() > memorySize) //as long as the hashmap size is smaller than the memory, the value will be stored in the virtual memory manager if not itll be stored in the disk
+        System.out.println("The virtual memory currently has" + virtualMemoryManager.size());
+        System.out.println("The memory has" + memorySize + "pages");
+        if (virtualMemoryManager.size() < memorySize) //as long as the hashmap size is smaller than the memory, the value will be stored in the virtual memory manager if not itll be stored in the disk
         {
             virtualMemoryManager.put(variableID, value); //trying to add the value of store
             System.out.println("STORE successfully completed in the virtual memory manager: " + " Variable: " + variableID + ", Value: " + value);

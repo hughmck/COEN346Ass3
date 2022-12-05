@@ -10,5 +10,8 @@ Sorted List
 2 3 Waiting
 4 3 Waiting
 Current Time: 0
-Process currently being completed: [Thread[#22,Thread-1,5,main], Thread[#21,Thread-0,5,main], Thread[#23,Thread-2,5,main]]Time 1, 
-Time 1, Time 2, Time 3, Process has been finished
+Time 1, Time 1, Process currently being completed: [Thread[#32,Thread-1,5,main], Thread[#31,Thread-0,5,main], Thread[#33,Thread-2,5,main]]
+Time 2, Current Time: 3
+Time 4, Process has been finished
+Process currently being completed: [Thread[#32,Thread-1,5,main], Thread[#31,Thread-0,5,main], Thread[#33,Thread-2,5,main]]
+Time 4, Process has been finished
