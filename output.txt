@@ -1,5 +1,23 @@
 UnSorted List
-Time 2, Time 2, Time 2, Time 2, Time 2, RELEASE (From Main Memory) Variable: 0, Value: null
-RELEASE (From Main Memory) Variable: 0, Value: null
-RELEASE (From Main Memory) Variable: 0, Value: null
-Time 4, Time 5, RELEASE (From Main Memory) Variable: 0, Value: null
+Time 2, Process1 : Started.
+Time 1, Process2 : Started.
+Time 2, Process1 : Started.
+2 3 Waiting
+Time 2, Process1 : Started.
+1 2 Process 2: Started.
+4 3 Waiting
+Time 2, Time 2, Time 2, STORE successfully completed in the virtual memory manager:  Variable: 2, Value: 3
+Sorted List
+STORE successfully completed in the virtual memory manager:  Variable: 1, Value: 5
+STORE was completed in the disk drive as the virtual memory was full:  Variable: 3, Value: 7
+1 2 Process 2: Started.
+Time 4, Time 5, Time 3, 2 0 Process 1: Started.
+4 3 Waiting
+LOOKUP successful. Found value in the disk drive. Variable 3, Value: 7
+RELEASE (From Main Memory) Variable: 1, Value: 5
+LOOKUP successful. Found value in the virtual memory. Variable 2, Value: 3
+Time 5, Process has been finished
+Time 5, Process has been finished
+Time 5, Process has been finished
+Time 5, Clock: 6 , Clock: 7 , Clock: 8 , Clock: 9 , Clock: 10 , Clock: 11 , Clock: 12 ,
+Process finished with exit code -1

@@ -30,10 +30,6 @@ public class Driver{
 
     //public ArrayList<APICalls> commandList = Driver.commands;
 
-    static int value;
-    static int variableID;
-    String command;
-
     static int accessTime;
 
 
@@ -74,7 +70,6 @@ public class Driver{
                 reader.close();
             } else if (file == "processes.txt") {
                 while (reader.hasNext()) {
-                    System.out.println("In processes");
                     int numberOfCores = reader.nextInt();
                     int numberOfProcesses = reader.nextInt();
                     for (int i = 0; i < numberOfProcesses; i++) {
@@ -94,21 +89,26 @@ public class Driver{
             while (reader.hasNext()) {//need to put in a for loop which iterates through all the lines
                 String command = reader.next();
                 if (command.equals(storeString)) {
-                    System.out.println("In Store data");
                     int variableID = reader.nextInt();
                     int value = reader.nextInt();
-                }
-                if (command.equals(lookupString)) {
-                    System.out.println("In look up data");
-                    int variableID = reader.nextInt();
-                    accessTime = clock.getSecondsGoneBy();
+                    commands.add(new APICalls(command, variableID, value, false)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
+                    numberOfCommands++;
                 }
                 if (command.equals(releaseString)) {
-                    System.out.println("In release data");
                     int variableID = reader.nextInt();
+                    int value = LookUp(variableID);
+                    commands.add(new APICalls(command, variableID, value, false)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
+                    numberOfCommands++;
                 }
-                commands.add(new APICalls(command, variableID, value, false)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
-                numberOfCommands++;
+                if (command.equals(lookupString)) {
+                    int variableID = reader.nextInt();
+                    int value = LookUp(variableID);
+                    accessTime = clock.getSecondsGoneBy();
+                    commands.add(new APICalls(command, variableID, value, false)); //put API calls directly in here, based on the reader.next() value, dictate which function is called
+                    numberOfCommands++;
+                }
+
+
             }reader.close();
                 fw.write("UnSorted List"); //sorts the list based on arrival time FIFO
                 Driver.fw.write("\n");
@@ -164,7 +164,7 @@ public class Driver{
             }
         }
 
-        public static int LookUp ( int variableID, int accessTime) throws IOException {
+        public static int LookUp ( int variableID) throws IOException {
 
             if (virtualMemoryManager.containsKey(variableID)) {
                 System.out.println("LOOKUP successful. Found value in the virtual memory. Variable " + variableID + ", Value: " + virtualMemoryManager.get(variableID));

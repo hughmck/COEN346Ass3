@@ -27,6 +27,10 @@ public class APICalls {
         this.inUse = false;
     }
 
+    public void lock()
+    {
+        this.inUse = true;
+    }
     public void Store(int variableID, int value){//if the main memory is not full, add it there. if it is full, add it to the disk drive
         this.variableID = variableID;
         this.value = value;

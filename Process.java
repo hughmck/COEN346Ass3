@@ -82,34 +82,39 @@ public class Process extends Thread implements Comparable<Process>{
                 int pName = i +1;
                 if(process.arrivalTime != Clock.secondsGoneBy){
                     Clock.secondsGoneBy++; //increments the clock until it reaches the first arrival time
+
                 }
-                if(process.processStatus.equals(waitingString) && process.arrivalTime == Clock.secondsGoneBy) { //checking to see if the first process is waiting, if the processes' arrival time is equal to the clock, run it
-                    System.out.print("Time " + Clock.secondsGoneBy + ", "); //output the current time on the clock
+                if(Objects.equals(process.processStatus, waitingString) && process.arrivalTime == Clock.secondsGoneBy) { //checking to see if the first process is waiting, if the processes' arrival time is equal to the clock, run it
+                    System.out.print("Time " + Clock.secondsGoneBy + ", Process" + pName + " : Started. \n"); //output the current time on the clock
                     Driver.fw.write("Time " + Clock.secondsGoneBy + ", "); //output the current time on the clock
                     process.processStatus = "Process " + pName + ": Started."; //start the process
                     process.run();
                 }
 
-                while(process.executionTime > 0) { //while the process has execution time left, run it
+                if(process.executionTime > 0) { //while the process has execution time left, run it
                     for(APICalls call : Driver.commands)
                     {
-                        System.out.print("Time " + Clock.secondsGoneBy + ", ");
-                        Driver.fw.write("Time " + Clock.secondsGoneBy + ", ");
-                        String command = call.command;
-                        int variableID = call.variableID;
-                        int value = call.value;
-                        if (command == storeString)
+                        if (!call.inUse)
                         {
-                            Driver.Store(variableID,value,Clock.secondsGoneBy);
+                            call.lock();
+                            System.out.print("Time " + Clock.secondsGoneBy + ", ");
+                            Driver.fw.write("Time " + Clock.secondsGoneBy + ", ");
+                            String command = call.command;
+                            int variableID = call.variableID;
+                            int value = call.value;
+                            if (Objects.equals(command, storeString))
+                            {
+                                Driver.Store(variableID,value,Clock.secondsGoneBy);
+                            }
+                            else if (Objects.equals(command, lookupString)) {
+                                Driver.LookUp(variableID);
+                            }
+                            else {
+                                Driver.Release(variableID);
+                            }
+                            process.executionTime--;
+                            Clock.secondsGoneBy++;
                         }
-                        else if (command == lookupString) {
-                            Driver.LookUp(variableID, Clock.secondsGoneBy);
-                        }
-                        else {
-                            Driver.Release(variableID);
-                        }
-                        process.executionTime--;
-                        Clock.secondsGoneBy++;
                     }
                 }
 
